@@ -1,0 +1,9 @@
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "addresses": 
+    [
+      "100 George St",
+      "200 George St"
+    ]
+}

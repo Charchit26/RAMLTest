@@ -1,0 +1,32 @@
+#%RAML 1.0
+title: Test API
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/f9f76f28-3878-4d36-b4f5-f38ae2cef1b8/api/{version} # baseUri: https://my-server/api/{version}
+mediaType:
+  - application/json
+version: v1
+protocols:
+  - https
+securitySchemes: 
+  basicAuth: !include securitySchemes/basicAuth.raml
+securedBy: [ basicAuth ]
+
+types:
+  Customer: !include types/Customer.raml
+  Error: !include types/Error.raml
+
+resourceTypes: 
+  collection: !include resourceTypes/collection.raml
+  item: !include resourceTypes/item.raml
+
+/customers:
+  type: 
+    collection:
+      get-response-type: Customer[]
+      get-response-example-ref: !include /examples/Customers.json
+      post-request-type: Customer
+      post-request-example-ref: !include /examples/Customer.json
+  /{id}:
+    type:
+      item: 
+        put-request-type: Customer
+        put-request-example-ref: !include /examples/Customer.json

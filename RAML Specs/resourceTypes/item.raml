@@ -1,0 +1,21 @@
+#%RAML 1.0 ResourceType
+
+usage: Apply this resource type to any resource that returns only a single item.
+
+uses:
+  traits: ../traits/traits.raml
+  
+put:
+  description: Update an existing customer by id
+  body:
+    application/json:
+      type: <<put-request-type>>
+      example: <<put-request-example-ref>>
+  is: 
+    - traits.hasNotFound
+    - traits.hasNoContent
+delete:
+  description: Removes a <<resourcePathName | !singularize>> from the system 
+  is: 
+    - traits.hasNotFound
+    - traits.hasNoContent

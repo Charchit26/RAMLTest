@@ -1,0 +1,17 @@
+[
+  {
+    "id": 101,
+    "firstName": "John",
+    "lastName": "Doe",
+    "addresses": ["100 George St", "200 George St"]
+  },
+  {
+    "id": 902, 
+    "firstName": "Rahul", 
+    "addresses": []
+  },
+  {
+    "id": 8900, 
+    "firstName": "Jenna"
+  }
+]
