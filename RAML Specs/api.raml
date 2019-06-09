@@ -37,10 +37,6 @@ traits:
     responses:
       201:
         description: Successfully created a new customer
-        body:
-          application/json:
-            type: Customer
-            example: !include examples/Customer.json
   /{id}:
     uriParameters: 
       id: 
