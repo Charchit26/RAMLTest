@@ -1,32 +1,61 @@
 #%RAML 1.0
 title: Test API
-baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/f9f76f28-3878-4d36-b4f5-f38ae2cef1b8/api/{version} # baseUri: https://my-server/api/{version}
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/bb18f05b-0d1c-4197-a3ff-3eba405eb901/api/{version} # baseUri: https://my-server/api/{version}
 mediaType:
   - application/json
 version: v1
-protocols:
-  - https
+protocols: [ HTTPS ]
+
 securitySchemes: 
   basicAuth: !include securitySchemes/basicAuth.raml
 securedBy: [ basicAuth ]
-
 types:
   Customer: !include types/Customer.raml
   Error: !include types/Error.raml
-
-resourceTypes: 
-  collection: !include resourceTypes/collection.raml
-  item: !include resourceTypes/item.raml
-
+traits:
+  hasResponseCollection: !include traits/hasResponseCollection.raml
+  hasNotFound: !include traits/hasNotFound.raml
+  hasNoContent: !include traits/hasNoContent.raml
+  pageable: !include traits/pageable.raml
+  cacheable: !include traits/content-cacheable.raml
+  
 /customers:
-  type: 
-    collection:
-      get-response-type: Customer[]
-      get-response-example-ref: !include /examples/Customers.json
-      post-request-type: Customer
-      post-request-example-ref: !include /examples/Customer.json
+  get:
+    description: Get list of customers
+    is: 
+      - hasResponseCollection
+      - pageable
+      - cacheable
+    queryParameters:
+      firstName?: string
+  post:
+    description: Create a new customer
+    body:
+      application/json:
+        type: Customer
+        example: !include examples/Customer.json
+    responses:
+      201:
+        description: Successfully created a new customer
+        body:
+          application/json:
+            type: Customer
+            example: !include examples/Customer.json
   /{id}:
-    type:
-      item: 
-        put-request-type: Customer
-        put-request-example-ref: !include /examples/Customer.json
+    uriParameters: 
+      id: 
+        description: the customer id sent in path
+    put:
+      description: Update an existing customer by id
+      body:
+        application/json:
+          type: Customer
+          example: !include examples/Customer.json
+      is: 
+        - hasNotFound
+        - hasNoContent
+    delete:
+      description: Delete an existing customer by id
+      is: 
+        - hasNotFound
+        - hasNoContent
